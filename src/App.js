@@ -44,7 +44,7 @@ const ParentComponent = () => {
     <div className='grid'>
 <Grid verticalAlign="middle" textAlign="center" columns={'equal'} >
           <Grid.Column>
-          <Image style={{padding:"10px"}} verticalAlign="middle" src="https://tuna.voicemod.net/sound/41e56e6c-b8cd-4cec-a287-10f05fc02e1d" circular size='small'/>
+          <Image style={{padding:"10px"}} verticalAlign="middle" src="https://us-tuna-sounds-images.voicemod.net/41e56e6c-b8cd-4cec-a287-10f05fc02e1d-1687027894062.jpg" circular size='small'/>
           <h2 style={{ fontSize: '50px' ,fontWeight: 'bold',
 fontStyle: 'italic' ,fontFamily: "Helvetica, sans-serif"}}>Anime Neko</h2>
 <Link to="/watchlist" style={{ color:"#123c69",fontSize: '20px'}} ><Icon name='list alternate'/>Watchlist</Link>
