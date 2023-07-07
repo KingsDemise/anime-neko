@@ -44,7 +44,6 @@ const ParentComponent = () => {
   };
 
   return (
-<<<<<<< HEAD
     <div className="grid">
       <Grid verticalAlign="middle" textAlign="center" columns={"equal"}>
         <Grid.Column>
@@ -84,33 +83,6 @@ const ParentComponent = () => {
                   <a href={anime.url}>
                     <Image src={anime.images.jpg.image_url} alt={anime.title} />
                   </a>
-=======
-    <div className='grid'>
-<Grid verticalAlign="middle" textAlign="center" columns={'equal'} >
-          <Grid.Column>
-          <Image style={{padding:"10px"}} verticalAlign="middle" src="https://us-tuna-sounds-images.voicemod.net/41e56e6c-b8cd-4cec-a287-10f05fc02e1d-1687027894062.jpg" circular size='small'/>
-          <h2 style={{ fontSize: '50px' ,fontWeight: 'bold',
-fontStyle: 'italic' ,fontFamily: "Helvetica, sans-serif"}}>Anime Neko</h2>
-<Link to="/watchlist" style={{ color:"#123c69",fontSize: '20px'}} ><Icon name='list alternate'/>Watchlist</Link>
-          <h2>Search Anime</h2>
-        <Input
-          placeholder="Enter anime name..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          action={<Button onClick={searchAnime}>Search</Button>}
-          style={{padding:"10px"}}
-        />
-        <Card.Group className='cards' >
-          {searchResults.map((anime) => (
-            <Card key={anime.mal_id}>
-              <Card.Content>
-              <a href={anime.url}><Image src={anime.images.jpg.image_url} alt={anime.title}/></a>
-              </Card.Content>
-              
-              <Card.Content extra>
-              
-                <Card.Header>{anime.title}</Card.Header>
->>>>>>> 00bb6c500505e0e53997f1d89e3d288fa83479c8
                 </Card.Content>
 
                 <Card.Content extra>
