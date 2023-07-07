@@ -4,4 +4,6 @@
 }
 .cards{
     padding-top: 10px;
+    display: flex;
+    justifyContent: center;
 }
