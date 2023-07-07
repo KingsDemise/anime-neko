@@ -56,7 +56,7 @@ fontStyle: 'italic' ,fontFamily: "Helvetica, sans-serif"}}>Anime Neko</h2>
           action={<Button onClick={searchAnime}>Search</Button>}
           style={{padding:"10px"}}
         />
-        <Card.Group >
+        <Card.Group style={{ display: 'flex', justifyContent: 'center' }} >
           {searchResults.map((anime) => (
             <Card key={anime.mal_id} className='cards'>
               <Card.Content>
