@@ -90,6 +90,9 @@ const ParentComponent = () => {
 
   return (
     <div className="grid">
+      <Dimmer active={loading}>
+        <Loader>Hello Everynyan...</Loader>
+      </Dimmer>
       <Grid verticalAlign="middle" textAlign="center" columns={"equal"}>
         <Grid.Column>
           <Image
@@ -111,7 +114,7 @@ const ParentComponent = () => {
           </h2>
           <Link to="/watchlist" style={{ color: "#123c69", fontSize: "20px" }}>
             <Icon name="list alternate" />
-            Watchlist
+            Go to Watchlist
           </Link>
           <h2>Search Anime</h2>
           <Input
@@ -121,18 +124,11 @@ const ParentComponent = () => {
             action={<Button onClick={searchAnime}>Search</Button>}
             style={{ padding: "10px" }}
           />
-        </Grid.Column>
-      </Grid>
-      {loading ? (
-        <Dimmer active>
-          <Loader>Loading...</Loader>
-        </Dimmer>
-      ) : (
-        searchResults.length === 0 && (
-          <Grid stackable textAlign="center" columns={"equal"}>
-            <Grid.Row>
+
+          {searchResults.length === 0 && !loading && (
+            <Grid textAlign="center" columns={"equal"}>
               <Grid.Column>
-                <h2>Trending Series</h2>
+                <h2>Top Series</h2>
                 <Card.Group
                   style={{ display: "flex", justifyContent: "center" }}
                 >
@@ -143,7 +139,6 @@ const ParentComponent = () => {
                           <Image
                             src={anime.images.jpg.image_url}
                             alt={anime.title}
-                            size="small"
                           />
                         </a>
                       </Card.Content>
@@ -159,7 +154,7 @@ const ParentComponent = () => {
                 </Card.Group>
               </Grid.Column>
               <Grid.Column>
-                <h2>Trending Movies</h2>
+                <h2>Top Movies</h2>
                 <Card.Group
                   style={{ display: "flex", justifyContent: "center" }}
                 >
@@ -170,7 +165,6 @@ const ParentComponent = () => {
                           <Image
                             src={anime.images.jpg.image_url}
                             alt={anime.title}
-                            size="small"
                           />
                         </a>
                       </Card.Content>
@@ -185,37 +179,40 @@ const ParentComponent = () => {
                   ))}
                 </Card.Group>
               </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        )
-      )}
-      {searchResults.length > 0 && (
-        <Grid verticalAlign="middle" textAlign="center" stackable>
-          <Grid.Column>
-            <h2>Your Search Results....</h2>
-            <Card.Group style={{ display: "flex", justifyContent: "center" }}>
-              {searchResults.map((anime) => (
-                <Card key={anime.mal_id} className="cards">
-                  <Card.Content>
-                    <a href={anime.url}>
-                      <Image
-                        src={anime.images.jpg.image_url}
-                        alt={anime.title}
-                        size="small"
-                      />
-                    </a>
-                  </Card.Content>
+            </Grid>
+          )}
+          {searchResults.length > 0 && (
+            <Grid verticalAlign="middle" textAlign="center" columns={"equal"}>
+              <Grid.Column>
+                <h2>Your Search Results</h2>
+                <Card.Group
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  {searchResults.map((anime) => (
+                    <Card key={anime.mal_id} className="cards">
+                      <Card.Content>
+                        <a href={anime.url}>
+                          <Image
+                            src={anime.images.jpg.image_url}
+                            alt={anime.title}
+                          />
+                        </a>
+                      </Card.Content>
 
-                  <Card.Content extra>
-                    <Card.Header>{anime.title}</Card.Header>
-                  </Card.Content>
-                  <Card.Content extra>{renderActionButton(anime)}</Card.Content>
-                </Card>
-              ))}
-            </Card.Group>
-          </Grid.Column>
-        </Grid>
-      )}
+                      <Card.Content extra>
+                        <Card.Header>{anime.title}</Card.Header>
+                      </Card.Content>
+                      <Card.Content extra>
+                        {renderActionButton(anime)}
+                      </Card.Content>
+                    </Card>
+                  ))}
+                </Card.Group>
+              </Grid.Column>
+            </Grid>
+          )}
+        </Grid.Column>
+      </Grid>
     </div>
   );
 };
