@@ -1,6 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Card, Image, Input, Button, Grid, Icon } from "semantic-ui-react";
+import {
+  Card,
+  Image,
+  Input,
+  Button,
+  Grid,
+  Icon,
+  Dimmer,
+  Loader,
+} from "semantic-ui-react";
 import { AppContext } from "./AppContext";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import "./page.css";
@@ -8,20 +17,56 @@ import "./App.css";
 
 const ParentComponent = () => {
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const { addToWatchlist, removeFromWatchlist, watchlist } =
     useContext(AppContext);
+  const [topAiringAnime, setTopAiringAnime] = useState([]);
+  const [topMovie, setTopMovie] = useState([]);
+  useEffect(() => {
+    const fetchTopAiringAnime = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          "https://api.jikan.moe/v4/top/anime?type=tv&filter=airing&limit=20"
+        );
+        setTopAiringAnime(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    };
+
+    fetchTopAiringAnime();
+  }, []);
+  useEffect(() => {
+    const fetchTopMovie = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          "https://api.jikan.moe/v4/top/anime?type=movie&limit=20"
+        );
+        setTopMovie(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    };
+
+    fetchTopMovie();
+  }, []);
   const searchAnime = async () => {
     if (query.trim() === "") return;
+    setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.jikan.moe/v4/anime?q=${query}&sfw`
+        `https://api.jikan.moe/v4/anime?q=${query}`
       );
       setSearchResults(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
   };
   const isAnimeInWatchlist = (anime) => {
     return watchlist.some((item) => item.mal_id === anime.mal_id);
@@ -44,7 +89,6 @@ const ParentComponent = () => {
   };
 
   return (
-<<<<<<< HEAD
     <div className="grid">
       <Grid verticalAlign="middle" textAlign="center" columns={"equal"}>
         <Grid.Column>
@@ -77,51 +121,101 @@ const ParentComponent = () => {
             action={<Button onClick={searchAnime}>Search</Button>}
             style={{ padding: "10px" }}
           />
-          <Card.Group style={{ display: "flex", justifyContent: "center" }}>
-            {searchResults.map((anime) => (
-              <Card key={anime.mal_id} className="cards">
-                <Card.Content>
-                  <a href={anime.url}>
-                    <Image src={anime.images.jpg.image_url} alt={anime.title} />
-                  </a>
-=======
-    <div className='grid'>
-<Grid verticalAlign="middle" textAlign="center" columns={'equal'} >
-          <Grid.Column>
-          <Image style={{padding:"10px"}} verticalAlign="middle" src="https://us-tuna-sounds-images.voicemod.net/41e56e6c-b8cd-4cec-a287-10f05fc02e1d-1687027894062.jpg" circular size='small'/>
-          <h2 style={{ fontSize: '50px' ,fontWeight: 'bold',
-fontStyle: 'italic' ,fontFamily: "Helvetica, sans-serif"}}>Anime Neko</h2>
-<Link to="/watchlist" style={{ color:"#123c69",fontSize: '20px'}} ><Icon name='list alternate'/>Watchlist</Link>
-          <h2>Search Anime</h2>
-        <Input
-          placeholder="Enter anime name..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          action={<Button onClick={searchAnime}>Search</Button>}
-          style={{padding:"10px"}}
-        />
-        <Card.Group className='cards' >
-          {searchResults.map((anime) => (
-            <Card key={anime.mal_id}>
-              <Card.Content>
-              <a href={anime.url}><Image src={anime.images.jpg.image_url} alt={anime.title}/></a>
-              </Card.Content>
-              
-              <Card.Content extra>
-              
-                <Card.Header>{anime.title}</Card.Header>
->>>>>>> 00bb6c500505e0e53997f1d89e3d288fa83479c8
-                </Card.Content>
-
-                <Card.Content extra>
-                  <Card.Header>{anime.title}</Card.Header>
-                </Card.Content>
-                <Card.Content extra>{renderActionButton(anime)}</Card.Content>
-              </Card>
-            ))}
-          </Card.Group>
         </Grid.Column>
       </Grid>
+      {loading ? (
+        <Dimmer active>
+          <Loader>Loading...</Loader>
+        </Dimmer>
+      ) : (
+        searchResults.length === 0 && (
+          <Grid stackable textAlign="center" columns={"equal"}>
+            <Grid.Row>
+              <Grid.Column>
+                <h2>Trending Series</h2>
+                <Card.Group
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  {topAiringAnime.map((anime) => (
+                    <Card key={anime.mal_id} className="cards">
+                      <Card.Content>
+                        <a href={anime.url}>
+                          <Image
+                            src={anime.images.jpg.image_url}
+                            alt={anime.title}
+                            size="small"
+                          />
+                        </a>
+                      </Card.Content>
+
+                      <Card.Content extra>
+                        <Card.Header>{anime.title}</Card.Header>
+                      </Card.Content>
+                      <Card.Content extra>
+                        {renderActionButton(anime)}
+                      </Card.Content>
+                    </Card>
+                  ))}
+                </Card.Group>
+              </Grid.Column>
+              <Grid.Column>
+                <h2>Trending Movies</h2>
+                <Card.Group
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  {topMovie.map((anime) => (
+                    <Card key={anime.mal_id} className="cards">
+                      <Card.Content>
+                        <a href={anime.url}>
+                          <Image
+                            src={anime.images.jpg.image_url}
+                            alt={anime.title}
+                            size="small"
+                          />
+                        </a>
+                      </Card.Content>
+
+                      <Card.Content extra>
+                        <Card.Header>{anime.title}</Card.Header>
+                      </Card.Content>
+                      <Card.Content extra>
+                        {renderActionButton(anime)}
+                      </Card.Content>
+                    </Card>
+                  ))}
+                </Card.Group>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        )
+      )}
+      {searchResults.length > 0 && (
+        <Grid verticalAlign="middle" textAlign="center" stackable>
+          <Grid.Column>
+            <h2>Your Search Results....</h2>
+            <Card.Group style={{ display: "flex", justifyContent: "center" }}>
+              {searchResults.map((anime) => (
+                <Card key={anime.mal_id} className="cards">
+                  <Card.Content>
+                    <a href={anime.url}>
+                      <Image
+                        src={anime.images.jpg.image_url}
+                        alt={anime.title}
+                        size="small"
+                      />
+                    </a>
+                  </Card.Content>
+
+                  <Card.Content extra>
+                    <Card.Header>{anime.title}</Card.Header>
+                  </Card.Content>
+                  <Card.Content extra>{renderActionButton(anime)}</Card.Content>
+                </Card>
+              ))}
+            </Card.Group>
+          </Grid.Column>
+        </Grid>
+      )}
     </div>
   );
 };

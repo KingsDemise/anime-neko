@@ -1,9 +1,6 @@
 .grid {
-    padding: 1rem;
-    
+  padding: 1rem;
 }
-.cards{
-    padding-top: 10px;
-    display: flex;
-    justifyContent: center;
+.cards {
+  padding-top: 10px;
 }
