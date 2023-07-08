@@ -56,7 +56,10 @@ const ParentComponent = () => {
     fetchTopMovie();
   }, []);
   const searchAnime = async () => {
-    if (query.trim() === "") return;
+    if (query.trim() === "") {
+      setSearchResults([]);
+      return;
+    }
     setLoading(true);
     try {
       const response = await axios.get(
@@ -133,7 +136,7 @@ const ParentComponent = () => {
                   style={{ display: "flex", justifyContent: "center" }}
                 >
                   {topAiringAnime.map((anime) => (
-                    <Card key={anime.mal_id} className="cards">
+                    <Card className="fade-in-card" key={anime.mal_id}>
                       <Card.Content>
                         <a href={anime.url}>
                           <Image
@@ -159,7 +162,7 @@ const ParentComponent = () => {
                   style={{ display: "flex", justifyContent: "center" }}
                 >
                   {topMovie.map((anime) => (
-                    <Card key={anime.mal_id} className="cards">
+                    <Card className="fade-in-card" key={anime.mal_id}>
                       <Card.Content>
                         <a href={anime.url}>
                           <Image
@@ -184,12 +187,12 @@ const ParentComponent = () => {
           {searchResults.length > 0 && (
             <Grid verticalAlign="middle" textAlign="center" columns={"equal"}>
               <Grid.Column>
-                <h2>Your Search Results</h2>
+                <h2 style={{ paddingTop: "10px" }}>Your Search Results</h2>
                 <Card.Group
                   style={{ display: "flex", justifyContent: "center" }}
                 >
                   {searchResults.map((anime) => (
-                    <Card key={anime.mal_id} className="cards">
+                    <Card className="fade-in-card" key={anime.mal_id}>
                       <Card.Content>
                         <a href={anime.url}>
                           <Image
