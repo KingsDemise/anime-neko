@@ -38,7 +38,7 @@ const Watchlist = () => {
           ) : (
             <Card.Group style={{ display: "flex", justifyContent: "center" }}>
               {watchlist.map((anime) => (
-                <Card key={anime.mal_id}>
+                <Card className="fade-in-card" key={anime.mal_id}>
                   <Card.Content>
                     <a href={anime.url}>
                       {" "}
